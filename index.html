@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan SAS Inggris Kelas 5 - MI Ma'arif Mayak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%);
+            min-height: 100vh;
+            color: #1e293b;
+        }
+        /* Font khusus anak-anak untuk judul */
+        .kid-font {
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 2px solid #fff;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            border-radius: 24px;
+        }
+
+        .quote-box {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .modal { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none; transform: scale(0.8) translateY(20px); }
+        .modal.active { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+
+        /* Animation for Quote */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-bounce-slow { animation: bounce-slow 3s infinite; }
+
+        .btn-latihan {
+            transition: all 0.2s;
+        }
+        .btn-latihan:hover {
+            transform: translateY(-3px) rotate(-2deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @media print {
+            body { background: white; }
+            .no-print { display: none !important; }
+            .glass-panel { box-shadow: none; border: 1px solid #ccc; background: white; border-radius: 0; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid black !important; padding: 5px; page-break-inside: avoid; }
+            th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        
+        <!-- Header Section -->
+        <div class="glass-panel p-6 mb-6 relative overflow-hidden text-center md:text-left border-t-8 border-orange-400">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 text-4xl shadow-sm border-4 border-white">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight kid-font uppercase">MI MA'ARIF MAYAK</h1>
+                        <p class="text-slate-500 font-medium">PONOROGO</p>
+                    </div>
+                </div>
+                
+                <div class="text-center md:text-right bg-white/60 p-4 rounded-2xl border border-white">
+                    <h2 class="text-lg font-bold text-orange-500 uppercase tracking-wider kid-font">Kisi-kisi dan latihan</h2>
+                    <h3 class="text-lg font-bold text-orange-500 uppercase tracking-wider kid-font">Sumatif Tengah Semester</h3>
+                    <div class="text-sm text-slate-600 mt-1 font-bold">Tahun Pelajaran 2025/2026</div>
+                    <div class="mt-3 flex gap-2 justify-center md:justify-end">
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold shadow-sm">Bahasa Inggris</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold shadow-sm">Kelas V (Lima)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOTIVATIONAL QUOTES (Versi Anak SD) -->
+        <div class="quote-box rounded-2xl p-5 mb-8 text-center shadow-lg relative overflow-hidden no-print transform hover:scale-[1.01] transition-transform">
+            <div class="absolute top-0 left-0 opacity-20 transform -translate-x-2 -translate-y-2">
+                <i class="fas fa-sun text-6xl"></i>
+            </div>
+            <div class="absolute bottom-0 right-0 opacity-20 transform translate-x-2 translate-y-2">
+                <i class="fas fa-rocket text-6xl"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="inline-block bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-2">
+                    <i class="fas fa-heart text-red-500 mr-1"></i> Semangat Belajar!
+                </div>
+                <h3 id="quoteDisplay" class="text-xl md:text-2xl font-bold kid-font animate-bounce-slow">
+                    "Rajin pangkal pandai!"
+                </h3>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div class="relative w-full md:w-80 group">
+                <i class="fas fa-search absolute left-4 top-3.5 text-slate-400 group-focus-within:text-orange-500 transition-colors"></i>
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari materi (contoh: Food, Price)..." 
+                    class="w-full pl-10 pr-4 py-3 rounded-full border-2 border-slate-100 focus:outline-none focus:border-orange-300 shadow-sm transition-all bg-white">
+            </div>
+            <button onclick="window.print()" class="no-print bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-full shadow-lg transition-all flex items-center gap-2 transform hover:scale-105 active:scale-95 font-medium">
+                <i class="fas fa-print"></i> Cetak PDF
+            </button>
+        </div>
+
+        <!-- Table Container -->
+        <div class="glass-panel overflow-hidden shadow-xl rounded-3xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse" id="kisiTable">
+                    <thead>
+                        <tr class="bg-orange-50 text-orange-800 border-b border-orange-100">
+                            <th class="p-4 font-bold text-center w-16 rounded-tl-2xl">No</th>
+                            <th class="p-4 font-bold w-1/4">Materi / Topik</th>
+                            <th class="p-4 font-bold">Indikator Soal (Kisi-Kisi)</th>
+                            <th class="p-4 font-bold text-center w-24">Bentuk</th>
+                            <th class="p-4 font-bold text-center w-24 no-print rounded-tr-2xl">Latihan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-sm text-slate-600 bg-white/60">
+                        
+                        <!-- Row 1: Food & Taste -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">1</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center"><i class="fas fa-utensils"></i></span>
+                                    <span>Food & Taste</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Disajikan kalimat rumpang, siswa dapat mengidentifikasi rasa makanan/minuman (Sweet, Sour, Bitter, Salty).</td>
+                            <td class="p-4 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">PG</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('taste')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 2: Health -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">2</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-500 flex items-center justify-center"><i class="fas fa-notes-medical"></i></span>
+                                    <span>Health / Sickness</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Disajikan deskripsi gejala (symptom), siswa dapat menentukan nama penyakit dalam bahasa Inggris (Headache, Stomachache, etc).</td>
+                            <td class="p-4 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">PG</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('health')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 3: Prices -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">3</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center"><i class="fas fa-tag"></i></span>
+                                    <span>Numbers & Prices</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Siswa dapat membaca dan menuliskan harga (Rupiah) dalam bahasa Inggris dengan benar.</td>
+                            <td class="p-4 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">PG</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('price')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 4: Quantifiers -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">4</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center"><i class="fas fa-cubes"></i></span>
+                                    <span>Quantifiers</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Siswa dapat menggunakan kata <i>much, many, a few</i> untuk benda yang bisa dihitung dan tidak bisa dihitung (Countable/Uncountable).</td>
+                            <td class="p-4 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">PG</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('quantifier')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 5: Clothes -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">5</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center"><i class="fas fa-tshirt"></i></span>
+                                    <span>Clothes</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Siswa dapat mengidentifikasi jenis pakaian seragam sekolah dan aksesoris (Uniform, Socks, Tie).</td>
+                            <td class="p-4 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">PG</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('clothes')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 6: True/False -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">6</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center"><i class="fas fa-check-double"></i></span>
+                                    <span>True / False</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Menentukan kebenaran pernyataan tentang Rasa, Harga, atau Pakaian (Benar atau Salah).</td>
+                            <td class="p-4 text-center"><span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-bold">T/F</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('tf')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 7: Matching -->
+                        <tr class="hover:bg-orange-50 transition-colors group">
+                            <td class="p-4 text-center font-bold text-slate-400">7</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-500 flex items-center justify-center"><i class="fas fa-exchange-alt"></i></span>
+                                    <span>Matching</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Menjodohkan antara angka Rupiah dengan tulisan bahasa Inggrisnya, atau Gejala dengan Penyakitnya.</td>
+                            <td class="p-4 text-center"><span class="bg-teal-100 text-teal-700 px-2 py-1 rounded text-xs font-bold">Jodoh</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('match')" class="btn-latihan bg-orange-400 hover:bg-orange-500 text-white p-2 rounded-xl shadow-md"><i class="fas fa-gamepad"></i> Main</button></td>
+                        </tr>
+
+                        <!-- Row 8: Essay -->
+                        <tr class="bg-orange-50 border-l-4 border-orange-400">
+                            <td class="p-4 text-center font-bold text-slate-400">8</td>
+                            <td class="p-4 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-full bg-orange-200 text-orange-600 flex items-center justify-center"><i class="fas fa-pencil-alt"></i></span>
+                                    <span>Essay / Isian</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Menjawab pertanyaan singkat tentang rasa (bitter melon), terjemahan harga, atau menyusun kata acak.</td>
+                            <td class="p-4 text-center"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs font-bold">ESSAY</span></td>
+                            <td class="p-4 text-center no-print"><button onclick="openQuestion('essay')" class="btn-latihan bg-orange-600 hover:bg-orange-700 text-white p-2 rounded-xl shadow-md"><i class="fas fa-pen-fancy"></i> Tulis</button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 bg-white/50 border-t border-slate-200 text-xs text-center text-slate-500 font-medium">
+                &copy; 2025 Wahid | Guru Bahasa Inggris Kelas 5 - MI Ma'arif Mayak Ponorogo.
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP (Latihan Soal) -->
+    <div id="quizModal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-8 relative z-10 flex flex-col border-4 border-orange-200 max-h-[90vh]">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-red-100 hover:text-red-500 transition-colors shadow-sm">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <!-- Question Header -->
+            <div class="mb-4 flex-shrink-0">
+                <span id="qType" class="text-xs font-bold tracking-wider uppercase text-orange-500 mb-2 block bg-orange-50 inline-block px-3 py-1 rounded-full">Latihan Soal</span>
+                <h3 id="qText" class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed pr-6 kid-font"></h3>
+            </div>
+            
+            <!-- Scrollable Area for Options/Essay -->
+            <div id="scrollArea" class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Multiple Choice Container -->
+                <div id="optionsContainer" class="space-y-3 pb-4"></div>
+                
+                <!-- Essay Container -->
+                <div id="essayContainer" class="hidden space-y-4 pb-4">
+                     <p class="text-sm text-slate-500 italic mb-2"><i class="fas fa-keyboard"></i> Ketik jawabanmu di sini:</p>
+                     <textarea id="essayInput" rows="3" class="w-full p-4 border-2 border-slate-200 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-orange-400 transition-all text-slate-700 font-medium text-lg" placeholder="Jawab..."></textarea>
+                     <button onclick="checkEssay()" class="w-full bg-orange-500 text-white py-3 rounded-2xl font-bold hover:bg-orange-600 shadow-lg transform transition-transform active:scale-95 text-lg">Cek Jawaban!</button>
+                </div>
+                
+                <!-- Feedback Area -->
+                <div id="feedback" class="hidden mt-4 p-4 rounded-2xl text-center font-bold text-base border-2 animate-bounce-slow"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- QUOTE SYSTEM (ANAK SD) ---
+        const quotes = [
+            "\"Rajin pangkal pandai!\"",
+            "\"Practice makes perfect! (Latihan membuatmu hebat)\"",
+            "\"Belajar itu menyenangkan!\"",
+            "\"Don't give up! (Jangan menyerah)\"",
+            "\"Kamu pasti bisa!\"",
+            "\"Masa depan cerah menantimu!\""
+        ];
+        let quoteIndex = 0;
+        const quoteElement = document.getElementById('quoteDisplay');
+        setInterval(() => {
+            quoteElement.style.opacity = 0;
+            setTimeout(() => {
+                quoteIndex = (quoteIndex + 1) % quotes.length;
+                quoteElement.innerText = quotes[quoteIndex];
+                quoteElement.style.opacity = 1;
+            }, 500);
+        }, 4000);
+
+        // --- QUESTION BANK (DARI FILE DOCX KELAS 5) ---
+        // Saya memetakan ID kategori (taste, health, etc) ke dalam array soal
+        const questionBank = {
+            'taste': [
+                { text: "I like to eat candies and chocolate. They taste very ....", options: ["salty", "sour", "sweet", "bitter"], correct: 2 },
+                { text: "Sinta likes to drink lemonade. It tastes very ....", options: ["bitter", "sour", "salty", "spicy"], correct: 1 },
+                { text: "Coffee without sugar usually tastes ....", options: ["sweet", "sour", "salty", "bitter"], correct: 3 }
+            ],
+            'health': [
+                { text: "Budi feels hot and his head hurts. He has a ....", options: ["toothache", "stomachache", "headache", "earache"], correct: 2 },
+                { text: "Andi cannot go to school because his stomach hurts. He has a ....", options: ["cough", "stomachache", "toothache", "fever"], correct: 1 }
+            ],
+            'price': [
+                { text: "The shoes cost <b>Rp 85.000</b>. It is ....", options: ["eighty-five thousand rupiah", "eight-five thousand rupiah", "eighty thousand and five", "eighteen thousand"], correct: 0 },
+                { text: "The bag costs <b>Rp 120.500</b>. It is ....", options: ["one hundred twenty thousand five hundred rupiah", "one twenty five hundred", "one thousand two hundred", "one hundred two thousand"], correct: 0 }
+            ],
+            'quantifier': [
+                { text: "Mother wants to make sweet tea. She needs .... sugar.", options: ["many", "much", "a few", "a number of"], correct: 1, note: "Sugar is Uncountable (Tidak bisa dihitung)" },
+                { text: "To make a cup of coffee, Father needs .... water.", options: ["many", "much", "some", "any"], correct: 1 }
+            ],
+            'clothes': [
+                { text: "Every Monday, the students wear a white and red .... to school.", options: ["pyjamas", "raincoat", "uniform", "jacket"], correct: 2 },
+                { text: "On Friday, the scouts (pramuka) wear a brown ....", options: ["uniform", "swimsuit", "raincoat", "jacket"], correct: 0 }
+            ],
+            'tf': [
+                { text: "True or False?<br><b>Rp 12.000</b> is read as 'Twelve thousand rupiah'.", options: ["True (Benar)", "False (Salah)"], correct: 0 },
+                { text: "True or False?<br>Honey (Madu) tastes salty.", options: ["True (Benar)", "False (Salah)"], correct: 1 },
+                { text: "True or False?<br>We use 'How many' for <b>Money</b>.", options: ["True", "False"], correct: 1, note: "Money is Uncountable, use 'How Much'" }
+            ],
+            'match': [
+                { text: "Pasangkan!<br><b>Rp 50.000</b> in English is ....", options: ["Five thousand", "Fifty thousand", "Fifteen thousand", "Five hundred"], correct: 1 },
+                { text: "Pasangkan!<br><b>'My tooth hurts'</b> means I have a ....", options: ["Headache", "Stomachache", "Toothache", "Backache"], correct: 2 }
+            ],
+            'essay': [
+                { text: "The taste of bitter melon (pare) is ......", answer: "bitter", isEssay: true },
+                { text: "Translate: 'Tujuh puluh lima ribu rupiah'", answer: "seventy five thousand rupiah", isEssay: true, flexible: true },
+                { text: "Arrange words: <b>have - I - headache - a - terrible</b>", answer: "i have a terrible headache", isEssay: true }
+            ]
+        };
+
+        let currentQ = null;
+
+        function openQuestion(category) {
+            // Ambil soal acak dari kategori tersebut
+            const questions = questionBank[category];
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            const data = questions[randomIndex];
+
+            currentQ = data;
+            
+            // Set Text UI
+            document.getElementById('qType').innerText = category.toUpperCase();
+            document.getElementById('qText').innerHTML = data.text;
+            document.getElementById('feedback').className = "hidden mt-4 p-4 rounded-2xl text-center font-bold text-base border-2";
+            
+            const optsContainer = document.getElementById('optionsContainer');
+            const essayContainer = document.getElementById('essayContainer');
+            optsContainer.innerHTML = '';
+            
+            if (data.isEssay) {
+                optsContainer.classList.add('hidden');
+                essayContainer.classList.remove('hidden');
+                document.getElementById('essayInput').value = '';
+                document.getElementById('essayInput').focus();
+            } else {
+                essayContainer.classList.add('hidden');
+                optsContainer.classList.remove('hidden');
+                
+                data.options.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    // Style tombol pilihan ganda yang colorful
+                    const colors = ['bg-red-50 hover:bg-red-100 border-red-200 text-red-700', 
+                                  'bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700', 
+                                  'bg-green-50 hover:bg-green-100 border-green-200 text-green-700', 
+                                  'bg-yellow-50 hover:bg-yellow-100 border-yellow-200 text-yellow-700'];
+                    const colorClass = colors[index % colors.length];
+
+                    btn.className = `w-full text-left p-4 rounded-2xl border-2 transition-all font-semibold mb-2 shadow-sm ${colorClass} flex items-center`;
+                    btn.innerHTML = `<span class="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 font-bold shadow-sm text-sm border">${String.fromCharCode(65+index)}</span> ${opt}`;
+                    btn.onclick = () => checkAnswer(index, btn);
+                    optsContainer.appendChild(btn);
+                });
+            }
+
+            document.getElementById('quizModal').classList.add('active');
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const feedback = document.getElementById('feedback');
+            const buttons = document.getElementById('optionsContainer').children;
+
+            // Disable clicks
+            for (let btn of buttons) {
+                btn.disabled = true;
+                btn.classList.add('opacity-70', 'cursor-not-allowed');
+            }
+            btnElement.classList.remove('opacity-70');
+            feedback.classList.remove('hidden');
+
+            if (selectedIndex === currentQ.correct) {
+                // Correct
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 font-bold mb-2 shadow-md flex items-center bg-green-500 border-green-600 text-white transform scale-105";
+                btnElement.querySelector('span').className = "w-8 h-8 rounded-full bg-white text-green-600 flex items-center justify-center mr-3 font-bold shadow-sm text-sm";
+                
+                feedback.innerHTML = "🎉 YAY! Jawabanmu BENAR! Hebat!";
+                feedback.className = "mt-4 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 border-2 border-green-300 animate-bounce";
+            } else {
+                // Wrong
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 font-bold mb-2 shadow-sm flex items-center bg-red-100 border-red-300 text-red-500";
+                
+                // Show Correct One
+                const correctBtn = buttons[currentQ.correct];
+                correctBtn.className = "w-full text-left p-4 rounded-2xl border-2 font-bold mb-2 shadow-md flex items-center bg-green-100 border-green-400 text-green-700 ring-2 ring-green-400";
+                correctBtn.classList.remove('opacity-70');
+
+                let msg = "😢 Yah, masih salah. Jawaban yang benar yang warna HIJAU ya.";
+                if(currentQ.note) msg += `<br><br><small>Catatan: ${currentQ.note}</small>`;
+                
+                feedback.innerHTML = msg;
+                feedback.className = "mt-4 p-4 rounded-2xl text-center font-bold bg-red-50 text-red-600 border-2 border-red-200";
+            }
+        }
+
+        function checkEssay() {
+            const input = document.getElementById('essayInput').value.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('hidden');
+
+            // Cek Jawaban Essay
+            let isCorrect = false;
+            // Bersihkan kunci jawaban juga
+            const cleanKey = currentQ.answer.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+
+            if (currentQ.flexible) {
+                // Kalau flexible, cukup cek kata kuncinya ada ga
+                if (input.includes("seventy") && input.includes("five")) isCorrect = true;
+            } else {
+                if (input === cleanKey) isCorrect = true;
+            }
+
+            if (isCorrect) {
+                feedback.innerHTML = "🌟 KEREN! Tulisanmu Benar!";
+                feedback.className = "mt-4 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 border-2 border-green-300";
+            } else {
+                feedback.innerHTML = `🧐 Kurang tepat.<br>Jawabannya adalah: <br><b>"${currentQ.answer}"</b>`;
+                feedback.className = "mt-4 p-4 rounded-2xl text-center font-bold bg-orange-50 text-orange-700 border-2 border-orange-200";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('quizModal').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('feedback').classList.add('hidden');
+            }, 300);
+        }
+
+        // Search Filter
+        function filterTable() {
+            var input = document.getElementById("searchInput").value.toUpperCase();
+            var tr = document.getElementById("kisiTable").getElementsByTagName("tr");
+            for (var i = 1; i < tr.length; i++) {
+                var tds = tr[i].getElementsByTagName("td");
+                if (tds.length > 1) {
+                    var txt1 = tds[1].textContent || tds[1].innerText;
+                    var txt2 = tds[2].textContent || tds[2].innerText;
+                    if (txt1.toUpperCase().indexOf(input) > -1 || txt2.toUpperCase().indexOf(input) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
